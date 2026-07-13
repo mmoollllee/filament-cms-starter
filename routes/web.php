@@ -1,17 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Mmoollllee\Cms\Http\Controllers\Frontend\ContentFragmentController;
+use Mmoollllee\Cms\Http\Controllers\Frontend\ContentShowController;
+use Mmoollllee\Cms\Http\Controllers\Frontend\RobotsController;
+use Mmoollllee\Cms\Http\Controllers\Frontend\SitemapController;
 
+// Tenant scoping, redirects, visibility gate and the branded 404 renderer are
+// wired globally on the web group in bootstrap/app.php.
 // App routes go here — ABOVE the CMS catch-all.
 
-// ── filament-cms frontend routes (added by `php artisan cms:install`) ─────────
-// Tenant-scoped by host. Keep the catch-all LAST — app routes go above it.
-Route::middleware(\Mmoollllee\Cms\Http\Middleware\ResolveTenantFromHost::class)->group(function (): void {
-    Route::get('/robots.txt', \Mmoollllee\Cms\Http\Controllers\Frontend\RobotsController::class)->name('robots');
-    Route::get('/sitemap.xml', \Mmoollllee\Cms\Http\Controllers\Frontend\SitemapController::class)->name('sitemap');
-    Route::get('/_content', \Mmoollllee\Cms\Http\Controllers\Frontend\ContentFragmentController::class)->name('content.fragment');
+Route::get('/robots.txt', RobotsController::class)->name('robots');
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('/_content', ContentFragmentController::class)->name('content.fragment');
 
-    Route::get('/{path?}', \Mmoollllee\Cms\Http\Controllers\Frontend\ContentShowController::class)
-        ->where('path', '.*')
-        ->name('content.show');
-});
+Route::get('/{path?}', ContentShowController::class)
+    ->where('path', '.*')
+    ->name('content.show');
