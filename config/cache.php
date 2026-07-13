@@ -131,13 +131,6 @@ return [
     |
     */
 
-    /*
-    | filament-cms cacht Tenant-/Menü-/Branding-Lookups als Eloquent-Models
-    | ("forever") — mit dem Laravel-13-Default (false) kämen sie als
-    | __PHP_Incomplete_Class zurück (500 im Frontend). true entspricht dem
-    | Verhalten vor Laravel 13. Verschärfen, sobald das Package skalare
-    | Daten statt Models cacht.
-    */
-    'serializable_classes' => true,
+    'serializable_classes' => false,
 
 ];
