@@ -1,0 +1,117 @@
+.site {
+    --site-edge-space: 1.25rem;
+    --site-visible-height: calc(100vh - var(--site-edge-space) * 2);
+    --site-content-width: 60rem;
+    --site-flyout-width: 20rem;
+    --shadow-soft: 0 24px 80px rgb(0 0 0 / 14%);
+    background-color: var(--color-surface);
+    overflow-x: clip;
+}
+
+@media (min-width: 1280px) {
+    .site {
+        --site-content-width: 68rem;
+    }
+}
+
+@media (min-width: 1536px) {
+    .site {
+        --site-content-width: 74rem;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    touch-action: pan-y;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+.site svg:not(.logo),
+.site img,
+.site figure,
+.site picture {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.site a:not(.btn) {
+    color: inherit;
+}
+
+.site-header-shell {
+    border-color: rgb(255 255 255 / 12%);
+    background: rgb(255 255 255 / 8%);
+    box-shadow: var(--shadow-soft);
+}
+
+.brand {
+    color: var(--color-on-light);
+    background: var(--background-image-gradient-bright);
+    letter-spacing: 0.16em;
+    box-shadow: var(--shadow-brand);
+}
+
+.brand img {
+    display: block;
+}
+
+.shell {
+    margin-inline: auto;
+    width: 100%;
+    max-width: var(--site-content-width);
+}
+
+@keyframes mt-logo-paint {
+    0% { clip-path: inset(0 100% 0 0); }
+    10% { clip-path: inset(0 0 0 0); }
+    90% { clip-path: inset(0 0 0 0); }
+    95% { clip-path: inset(0 0 0 100%); }
+    97% { clip-path: inset(0 100% 0 0); }
+    100% { clip-path: inset(0 100% 0 0); }
+}
+
+.logo-link {
+    --_h: 2.5rem;
+    height: var(--_h);
+    width: calc(var(--_h) * 5 / 2);
+    transition: width 0.3s ease, opacity 0.3s ease;
+
+    &:hover {
+        width: calc(var(--_h) * 31 / 5);
+    }
+
+    @media (min-width: 40rem) {
+        --_h: 3.75rem;
+    }
+}
+
+.logo.animated {
+    & .st1:nth-child(2) {
+        animation: mt-logo-paint 12s ease infinite;
+        animation-fill-mode: backwards;
+        animation-delay: 1s;
+    }
+    & .st1:nth-child(3) {
+        animation: mt-logo-paint 12s ease infinite;
+        animation-fill-mode: backwards;
+        animation-delay: 0.2s;
+    }
+    & .st1:nth-child(4) {
+        animation: mt-logo-paint 12s ease infinite;
+        animation-fill-mode: backwards;
+        animation-delay: 0.5s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        & .st1 {
+            animation: none;
+        }
+    }
+}

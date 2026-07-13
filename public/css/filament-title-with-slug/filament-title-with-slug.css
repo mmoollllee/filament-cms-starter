@@ -1,0 +1,189 @@
+/*
+ * filament-title-with-slug — component styles
+ * Plain CSS, no Tailwind build required.
+ */
+
+/* ---------------------------------------------------------------------------
+ * Row container
+ * --------------------------------------------------------------------------- */
+.fts-slug-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    line-height: 1.5rem;
+    font-size: 0.875rem;
+    container-type: inline-size;
+}
+
+@container (max-width: 700px) {
+    .fts-slug-label,
+    .fts-slug-base-url,
+    .fts-slug-visit-label {
+        display: none;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+ * Meta section: "Permalink: https://example.com/ slug [pencil]"
+ * --------------------------------------------------------------------------- */
+.fts-slug-meta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    gap: 0.5rem;
+    color: rgb(107, 114, 128);
+}
+
+.dark .fts-slug-meta {
+    color: rgb(156, 163, 175);
+}
+
+/* Inner wrapper: label + base-url + slug/edit-link, clips when narrow */
+.fts-slug-meta-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Slug value in readonly mode */
+.fts-slug-value {
+    flex: 1;
+    min-width: 0;
+    font-weight: 600;
+    color: rgb(9, 9, 11);
+}
+
+.dark .fts-slug-value {
+    color: white;
+}
+
+.fts-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+ * Edit link: clickable "slug [pencil]" in display mode
+ * --------------------------------------------------------------------------- */
+.fts-slug-edit-link {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    cursor: pointer;
+    font-weight: 600;
+    color: rgb(9, 9, 11);
+    text-decoration: none;
+}
+
+/* Slug text inside the edit link — truncates, never wraps */
+.fts-slug-edit-link > span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.fts-slug-edit-link:hover {
+    text-decoration: underline;
+}
+
+.dark .fts-slug-edit-link {
+    color: white;
+}
+
+/* Modified indicator */
+.fts-slug-edit-link--modified {
+    color: rgb(75, 85, 99);
+    background-color: rgb(243, 244, 246);
+    padding: 0 0.25rem;
+    border-radius: 0.375rem;
+}
+
+.dark .fts-slug-edit-link--modified {
+    color: rgb(156, 163, 175);
+    background-color: rgb(55, 65, 81);
+}
+
+/* ---------------------------------------------------------------------------
+ * Edit input
+ * --------------------------------------------------------------------------- */
+.fts-slug-input-wrapper {
+    flex: 1;
+}
+
+.fts-slug-input {
+    display: block;
+    width: 100%;
+    background-color: transparent;
+    padding: 0.125rem 0.25rem;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    outline-offset: 0;
+    color: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.fts-slug-input:focus,
+.fts-slug-input:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+.fts-slug-input[aria-invalid="true"] {
+    border-bottom: 2px solid rgb(220, 38, 38);
+}
+
+.dark .fts-slug-input[aria-invalid="true"] {
+    border-bottom-color: rgb(248, 113, 113);
+}
+
+/* ---------------------------------------------------------------------------
+ * Action buttons (OK / Reset / Cancel)
+ * --------------------------------------------------------------------------- */
+.fts-slug-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * Visit link wrapper
+ * --------------------------------------------------------------------------- */
+.fts-slug-visit {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Accessibility
+ * --------------------------------------------------------------------------- */
+.fts-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
+}

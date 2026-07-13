@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+@import '../../vendor/mmoollllee/laravel-consent-control/resources/dist/css/consent-message.css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source '../../vendor/mmoollllee/laravel-consent-control/resources/views/components/**/*.blade.php';
+
+/* Layout-Preset Safelist: Classes stored in database that Tailwind cannot detect from source files. */
+@source inline("contents w-50 w-100 card card-glass card-dark card-accent card-soft card-surface card-transparent rounded-panel rounded-card bg-surface text-on-dark grid-cols-2 {lg:,md:,xl:}grid-cols-{2,3,4} grid-flow-col xl:grid-flow-col {lg:}grid-flow-dense col-span-{2,3,full} row-span-{2,3,full} {lg:}row-span-3 gap-{3,4,5,6,8} {xl:}gap-10 items-{start,center,end,stretch} {xl:}items-center h-full overflow-hidden flex flex-col justify-{end,center} self-start xl:sticky xl:top-24 max-w-3xl min-h-[var(--site-visible-height)] {xl:}min-h-[var(--site-visible-height)] -mt-{0,1,2,3,4,5} {xl:}mt-{0,1,2,3,4,5} max-h-[50vh] max-h-[60vh] xl:max-h-none xl:grid-cols-[minmax(0,50vw)_minmax(22rem,1fr)] xl:grid-cols-[minmax(0,0.95fr)_1.05fr] xl:grid-cols-[minmax(0,1.08fr)_minmax(22rem,0.92fr)] xl:grid-cols-[minmax(0,1fr)_20rem] gap-5 xl:grid-cols-[minmax(0,1.1fr)_20rem]");
+
+@import './site/_design-tokens.css';
+
+@import './site/base.css';
+@import './site/typography.css';
+@import './site/buttons.css';
+@import './site/cards.css';
+@import './site/forms.css';
+@import './site/content.css';
+@import './site/navigation.css';
+@import './site/scroll-animate.css';
+
+
+body {
+    --height-pagescreen: calc(
+        100vh - (var(--spacing) * var(--page-padding)) * 2
+    );
+    --page-padding: 5;
+}
+
+@utility h-pagescreen {
+    height: var(--height-pagescreen);
+}
+
+@utility max-h-pagescreen {
+    max-height: var(--height-pagescreen);
+}
+
+@utility h2 {
+    @apply text-3xl font-medium leading-normal md:text-4xl;
+}
+
+@utility h3 {
+    @apply text-2xl font-medium leading-normal md:text-3xl;
+}
+
+@layer base {
+    h2,
+    .h2 {
+        @apply h2;
+    }
+
+    h3,
+    .h3 {
+        @apply h3;
+    }
+
+    p {
+        @apply mb-4;
+    }
+}
+
+@utility inset-edge {
+    top: var(--site-edge-space);
+    right: var(--site-edge-space);
+    left: var(--site-edge-space);
+}
+
+@utility p-edge {
+    padding-inline: var(--site-edge-space);
+    padding-block: var(--site-edge-space);
+}
+
+@utility h-viewport {
+    height: var(--site-visible-height);
+}
+
+.p-page {
+    padding: calc(var(--spacing) * var(--page-padding));
+}
+
+.px-page {
+    padding-left: calc(var(--spacing) * var(--page-padding));
+    padding-right: calc(var(--spacing) * var(--page-padding));
+}
+
+.py-page {
+    padding-top: calc(var(--spacing) * var(--page-padding));
+    padding-bottom: calc(var(--spacing) * var(--page-padding));
+}
+
+.pt-page {
+    padding-top: calc(var(--spacing) * var(--page-padding));
+}
+
+.onepager-section {
+    svg.icon {
+        @apply inline-block h-[1em];
+    }
+}

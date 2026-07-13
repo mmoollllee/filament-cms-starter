@@ -1,0 +1,46 @@
+@layer components {
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-full font-semibold no-underline transition duration-200 cursor-pointer;
+        @apply px-5 py-3 text-sm;
+    }
+
+    .btn-sm {
+        @apply px-4 py-2 text-sm;
+    }
+
+    .btn-lg {
+        @apply px-6 py-3 text-sm;
+    }
+
+    .btn-primary {
+        @apply text-white hover:-translate-y-0.5 hover:brightness-110;
+        box-shadow: var(--shadow-accent);
+        background-image: var(--background-image-gradient-primary);
+    }
+
+    .btn-secondary {
+        @apply border border-slate-300 bg-white text-slate-700 hover:-translate-y-0.5;
+    }
+
+    .btn-surface {
+        @apply border border-slate-200 bg-white text-slate-700 hover:-translate-y-0.5;
+        box-shadow: var(--shadow-surface);
+    }
+
+    .btn-soft {
+        @apply border border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300 hover:bg-white;
+    }
+
+    .btn-dark {
+        @apply bg-slate-900 text-white hover:-translate-y-0.5;
+    }
+
+    .btn-light {
+        @apply bg-white hover:-translate-y-0.5;
+        color: var(--color-on-light);
+    }
+
+    .btn-ghost-light {
+        @apply border border-white/20 bg-white/10 text-white hover:border-white/30 hover:bg-white/14;
+    }
+}

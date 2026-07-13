@@ -1,0 +1,17 @@
+@layer components {
+    .field {
+        @apply w-full min-w-0 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-normal text-slate-900 outline-none transition duration-200 focus:border-slate-300 focus:bg-white focus:ring-2 focus:ring-slate-200;
+    }
+
+    .check {
+        @apply flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm leading-relaxed text-slate-700;
+    }
+
+    .label {
+        @apply text-sm font-semibold text-slate-900;
+    }
+
+    .error {
+        @apply text-xs font-medium text-rose-700;
+    }
+}

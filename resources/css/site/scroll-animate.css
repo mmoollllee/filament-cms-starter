@@ -1,0 +1,62 @@
+/* Scroll-triggered reveal animations — driven by IntersectionObserver in scroll-animate.js */
+
+.anim {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.anim.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered delays for children inside grid/flex containers */
+.stagger > .anim:nth-child(2) { transition-delay: 0.1s; }
+.stagger > .anim:nth-child(3) { transition-delay: 0.15s; }
+.stagger > .anim:nth-child(4) { transition-delay: 0.2s; }
+.stagger > .anim:nth-child(5) { transition-delay: 0.25s; }
+.stagger > .anim:nth-child(6) { transition-delay: 0.3s; }
+
+/* Accessibility: respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .anim {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
+/* Scroll-driven zoom — CSS-native where supported, JS fallback otherwise */
+
+.scroll-zoom img,
+.scroll-zoom video {
+    transform-origin: center center;
+}
+
+@supports (animation-timeline: scroll()) {
+    .scroll-zoom img,
+    .scroll-zoom video {
+        animation: scroll-zoom-effect linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 80%;
+    }
+
+    @keyframes scroll-zoom-effect {
+        from { transform: scale(1.5); }
+        to { transform: scale(1); }
+    }
+}
+
+/* Print: always show content */
+@media print {
+    .anim {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .scroll-zoom img,
+    .scroll-zoom video {
+        transform: none !important;
+    }
+}

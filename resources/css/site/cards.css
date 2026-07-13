@@ -1,0 +1,62 @@
+@layer components {
+    .card {
+        @apply border border-slate-200 bg-white text-slate-900 content-start;
+        @apply p-5 rounded-card;
+        box-shadow: var(--shadow-card);
+    }
+
+    .card-glass {
+        @apply border-white/10 bg-white/8 text-white shadow-none backdrop-blur-sm;
+    }
+
+    .card-soft {
+        @apply border-slate-200 bg-slate-50 text-slate-900 shadow-none;
+    }
+
+    .card-dark {
+        @apply border-white/10 bg-dark text-white;
+        box-shadow: var(--shadow-card-dark);
+    }
+
+    .card-accent {
+        @apply border-white/10 text-white;
+        box-shadow: var(--shadow-accent-sm);
+        background-image: var(--background-image-gradient-primary);
+    }
+
+    .card-warning {
+        @apply border-amber-200 bg-amber-50 text-amber-950 shadow-none;
+    }
+
+    .card-success {
+        @apply border-emerald-200 bg-emerald-50 text-emerald-950 shadow-none;
+    }
+
+    .card-danger {
+        @apply border-rose-200 bg-rose-50 text-rose-950 shadow-none;
+    }
+
+    .card-surface {
+        @apply border-white/10 bg-white/6 text-white shadow-none;
+    }
+
+    .card-transparent {
+        @apply border-transparent bg-transparent shadow-none;
+    }
+
+    .pill {
+        @apply inline-flex items-center rounded-full border px-3 py-1 text-sm;
+    }
+
+    .pill-soft {
+        @apply border-slate-200 bg-slate-50 text-slate-600;
+    }
+
+    .pill-light {
+        @apply border-white/18 bg-white/10 text-white/88;
+    }
+
+    .pill-brand {
+        @apply border-teal-100 bg-teal-50 px-3 py-2 font-semibold text-teal-700;
+    }
+}

@@ -1,0 +1,24 @@
+@import '../../../vendor/filament/filament/resources/css/theme.css';
+@import '../../../vendor/blendbyte/filament-title-with-slug/resources/dist/filament-title-with-slug.css';
+@import '../../../vendor/awcodes/richer-editor/resources/css/index.css';
+@import "../../../vendor/datlechin/filament-menu-builder/resources/css/index.css";
+@import '../../../vendor/mmoollllee/filament-cms/resources/css/filament-cms.css';
+@import '../site/_design-tokens.css';
+@import '../site/buttons.css';
+@import '../site/content.css';
+@import '../site/cards.css';
+@import '../site/typography.css';
+
+@source '../../../app/Filament/**/*';
+@source '../../../resources/views/filament/**/*';
+/* filament-cms package views/overrides/src/blocks register themselves via @source in filament-cms.css */
+@source '../../../app/Support/Content/Blocks/**/*.blade.php';
+@source '../../../resources/views/builder-previews/**/*';
+@source '../../../vendor/awcodes/richer-editor/resources/views/**/*.blade.php';
+@source '../../../vendor/defstudio/filament-searchable-input/resources/**/*.blade.php';
+@source '../../../vendor/datlechin/filament-menu-builder/resources/**/*.blade.php';
+
+@source inline("inline-flex items-center gap-2 w-full inline size-5");
+
+/* The CMS builder rules (custom-block-preview, item-header hover, inactive-block
+   dimming + the "inaktiv" pill) ship in the package — see the @import above. */

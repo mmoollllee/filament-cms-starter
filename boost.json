@@ -1,0 +1,23 @@
+{
+    "agents": [
+        "codex",
+        "claude_code",
+        "copilot"
+    ],
+    "cloud": false,
+    "guidelines": true,
+    "herd_mcp": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "packages": [
+        "filament/blueprint"
+    ],
+    "sail": false,
+    "skills": [
+        "laravel-best-practices",
+        "mcp-development",
+        "pest-testing",
+        "tailwindcss-development",
+        "filament-security-audit"
+    ]
+}

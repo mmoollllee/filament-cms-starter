@@ -1,0 +1,45 @@
+@theme {
+    --font-sans: "Noto Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+
+    /* Base colors */
+    --color-primary: oklch(0.4334 0.081786 174.904);
+    --color-secondary: oklch(0.4853 0.0201 182.88);
+    --color-dark: #132734;
+
+    /* Semantic colors (overridden per tenant via inline style) */
+    --color-surface: var(--color-primary);
+    --color-on-dark: #ffffff;
+    --color-on-light: var(--color-primary);
+    --color-muted-text: var(--color-secondary);
+
+    /* Gradients */
+    --background-image-gradient-primary: radial-gradient(
+        circle at 50% 50%,
+        #2b776a 0%,
+        #005f4e 331%
+    );
+    --background-image-gradient-bright: radial-gradient(
+        circle at 50% 50%,
+        #fcfcfc 0%,
+        #f0f0f0 211%
+    );
+
+    /* Shadows */
+    --shadow-accent: 0 24px 60px rgb(0 95 78 / 0.28);
+    --shadow-accent-sm: 0 16px 48px rgb(0 95 78 / 0.22);
+    --shadow-card: 0 12px 40px rgb(15 23 42 / 0.06);
+    --shadow-card-dark: 0 8px 30px rgb(15 23 42 / 0.10);
+    --shadow-surface: 0 10px 30px rgb(15 23 42 / 0.06);
+    --shadow-brand: 0 12px 36px rgb(15 23 42 / 10%);
+    --shadow-glow: 0 0 60px 0 #0a3f36a1;
+
+    /* Radii */
+    --radius-card: 1.75rem;
+    --radius-panel: 2rem;
+    --radius-section: 2.4rem;
+
+    /* Font sizes */
+    --font-size-heading: 1.6rem;
+}

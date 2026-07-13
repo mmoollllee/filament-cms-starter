@@ -1,0 +1,68 @@
+.nav-menu {
+    pointer-events: auto;
+    color: var(--color-on-light);
+}
+
+.nav-indicator {
+    transition: width 250ms ease;
+    overflow: hidden;
+}
+
+.nav-indicator[data-marquee] .nav-indicator-text {
+    display: inline-block;
+    animation: marquee-scroll 4s linear infinite alternate;
+    animation-delay: 1s;
+}
+
+@keyframes marquee-scroll {
+    0%, 15% { transform: translateX(0); }
+    85%, 100% { transform: translateX(var(--marquee-offset, 0)); }
+}
+
+.nav-menu[data-open="true"] {
+    background: var(--background-image-gradient-bright);
+    box-shadow: var(--shadow-2xl);
+}
+
+.nav-menu-btn {
+    @apply bg-white;
+    color: var(--color-on-light);
+}
+
+.nav-menu-btn:hover {
+    background-image: none;
+    background-color: var(--color-surface);
+    color: var(--color-on-dark);
+}
+
+.nav-menu[data-open="true"] .nav-menu-btn {
+    color: var(--color-on-dark);
+    background-image: none;
+    background-color: var(--color-surface);
+}
+
+nav[data-role="header-breadcrumbs"] > a {
+    @apply opacity-100 hover:opacity-80;
+
+    &:nth-of-type(even) {
+        @apply opacity-80 hover:opacity-100;
+    }
+}
+
+.flyout {
+    & .flyout-btn {
+        @apply hover:bg-surface hover:text-white px-5 py-2.5 font-black no-underline transition-all uppercase flex items-center gap-2;
+
+        &.is-active {
+            @apply bg-surface text-white hover:bg-transparent hover:text-surface
+        }
+    }
+
+    & .flyout-link {
+        @apply no-underline transition-all hover:text-surface text-muted-text;
+
+        &.is-active {
+            @apply text-surface hover:text-muted-text
+        }
+    }
+}
