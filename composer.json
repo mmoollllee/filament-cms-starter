@@ -2,13 +2,18 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "mmoollllee/filament-cms-starter",
     "type": "project",
-    "description": "Starter for multi-tenant marketing websites on mmoollllee/filament-cms (Laravel 12 + Filament v5).",
-    "keywords": ["laravel", "filament", "cms", "starter"],
+    "description": "Starter for multi-tenant marketing websites on mmoollllee/filament-cms (Laravel 13 + Filament v5).",
+    "keywords": [
+        "laravel",
+        "filament",
+        "cms",
+        "starter"
+    ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1",
+        "php": "^8.3",
+        "laravel/framework": "^13.8",
+        "laravel/tinker": "^3.0",
         "mmoollllee/filament-builder-title": "^0.3.0",
         "mmoollllee/filament-cms": "^0.2",
         "mmoollllee/filament-consent-control": "^0.1",
@@ -94,17 +99,26 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "repositories": [{
-        "name": "filament-builder-title",
-        "type": "vcs",
-        "url": "https://github.com/mmoollllee/filament-builder-title"
-    },{
-        "name": "filament",
-        "type": "composer",
-        "url": "https://packages.filamentphp.com/composer"
-    },{
-        "name": "filament-cms",
-        "type": "vcs",
-        "url": "https://github.com/mmoollllee/filament-cms"
-    }]
+    "repositories": [
+        {
+            "name": "laravel-consent-control",
+            "type": "vcs",
+            "url": "https://github.com/mmoollllee/laravel-consent-control"
+        },
+        {
+            "name": "filament-cms",
+            "type": "vcs",
+            "url": "https://github.com/mmoollllee/filament-cms"
+        },
+        {
+            "name": "filament-builder-title",
+            "type": "vcs",
+            "url": "https://github.com/mmoollllee/filament-builder-title"
+        },
+        {
+            "name": "filament",
+            "type": "composer",
+            "url": "https://packages.filamentphp.com/composer"
+        }
+    ]
 }

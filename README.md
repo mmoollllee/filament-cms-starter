@@ -2,7 +2,7 @@
 
 Starter für Multi-Tenant-Marketing-Websites auf Basis von
 [`mmoollllee/filament-cms`](https://github.com/mmoollllee/filament-cms)
-(Laravel 12 + Filament v5) — destilliert aus den Gemeinsamkeiten von
+(Laravel 13 + Filament v5) — destilliert aus den Gemeinsamkeiten von
 muench-tiefbau.de und pernes-hebesysteme.de.
 
 Die Engine (Tenancy, Content-Types/Blueprints, Block-Builder, Layout-Presets,
