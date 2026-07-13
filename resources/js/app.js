@@ -1,13 +1,12 @@
 import './bootstrap';
 
-import siteOnepager from './features/site-onepager';
-import siteChildNavigation from './features/site-child-navigation';
+// Flyout-/Onepager-Mechanik aus dem filament-cms-Package (siteOnepager,
+// siteChildNavigation inkl. menuOpen/toggleMenu) — Vendor-Import statt
+// lokaler Kopien; Override-Hooks siehe Doku in frontend/index.js.
+import { registerCmsFrontend } from '../../vendor/mmoollllee/filament-cms/resources/js/frontend/index.js';
 
-// Register Alpine extensions — fires when any Alpine instance starts.
-// Works regardless of whether Alpine comes from standalone or Livewire ESM.
 document.addEventListener('alpine:init', () => {
-    window.Alpine.data('siteOnepager', siteOnepager);
-    window.Alpine.data('siteChildNavigation', siteChildNavigation);
+    registerCmsFrontend(window.Alpine);
 });
 
 // Pages with @livewireScriptConfig set window.livewireScriptConfig before
