@@ -3921,16 +3921,16 @@
         },
         {
             "name": "mmoollllee/filament-cms",
-            "version": "v0.2.8",
+            "version": "v0.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mmoollllee/filament-cms.git",
-                "reference": "bb9df275fb3a825e9ca5115b8659f1d16d05891f"
+                "reference": "3945f7d10fd4d2490103deba985f90e9092bca0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mmoollllee/filament-cms/zipball/bb9df275fb3a825e9ca5115b8659f1d16d05891f",
-                "reference": "bb9df275fb3a825e9ca5115b8659f1d16d05891f",
+                "url": "https://api.github.com/repos/mmoollllee/filament-cms/zipball/3945f7d10fd4d2490103deba985f90e9092bca0d",
+                "reference": "3945f7d10fd4d2490103deba985f90e9092bca0d",
                 "shasum": ""
             },
             "require": {
@@ -3990,10 +3990,10 @@
             ],
             "description": "Shared, updatable CMS engine for multi-tenant marketing websites (Laravel 12/13 + Filament v5): content types, block builder, layout presets, fragments, redirects and the complete admin panel.",
             "support": {
-                "source": "https://github.com/mmoollllee/filament-cms/tree/v0.2.8",
+                "source": "https://github.com/mmoollllee/filament-cms/tree/v0.2.9",
                 "issues": "https://github.com/mmoollllee/filament-cms/issues"
             },
-            "time": "2026-07-13T15:15:34+00:00"
+            "time": "2026-07-13T15:27:15+00:00"
         },
         {
             "name": "mmoollllee/filament-consent-control",
