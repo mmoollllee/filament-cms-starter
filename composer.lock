@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8355999a2ed7ab3177f5b597fec5a19b",
+    "content-hash": "98e3f127a7b044e94dc7c1a6876c3058",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -5185,6 +5185,74 @@
                 "issues": "https://github.com/mmoollllee/laravel-consent-control/issues"
             },
             "time": "2026-07-15T14:19:02+00:00"
+        },
+        {
+            "name": "mmoollllee/laravel-deployer",
+            "version": "0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mmoollllee/laravel-deployer.git",
+                "reference": "b9bf8f08c9578522cf5b65259e87835926b45a65"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mmoollllee/laravel-deployer/zipball/b9bf8f08c9578522cf5b65259e87835926b45a65",
+                "reference": "b9bf8f08c9578522cf5b65259e87835926b45a65",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^12.0|^13.0",
+                "illuminate/support": "^12.0|^13.0",
+                "php": ">=8.3"
+            },
+            "require-dev": {
+                "deployer/deployer": "^8.0",
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^4.4",
+                "pestphp/pest-plugin-laravel": "^4.1"
+            },
+            "suggest": {
+                "deployer/deployer": "Required to RUN the recipes (^8.0). Only needed where `dep` is invoked — a globally installed Deployer 8 works too, which is why it is not a hard dependency: the package is required in production for its artisan commands, and a deploy tool has no business shipping there.",
+                "spatie/laravel-db-snapshots": "Required in the consuming app (local + remote) for the pull:db-refresh / pull:db-full tasks — provides the snapshot:* artisan commands."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mmoollllee\\LaravelDeployer\\LaravelDeployerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mmoollllee\\LaravelDeployer\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Mmoollllee\\LaravelDeployer\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "@php vendor/bin/pest"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moritz Graf",
+                    "email": "info@moritz-graf.de"
+                }
+            ],
+            "description": "Shared Deployer recipes for in-place Git deployment of Laravel apps on Plesk / managed hosting: DB-snapshot pull, storage sync, maintenance-safe deploy, plus the artisan commands the workflow leans on.",
+            "support": {
+                "source": "https://github.com/mmoollllee/laravel-deployer/tree/0.4.0",
+                "issues": "https://github.com/mmoollllee/laravel-deployer/issues"
+            },
+            "time": "2026-08-18T11:13:48+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -12660,44 +12728,6 @@
                 "source": "https://github.com/maml-dev/maml-php/tree/v3.2.0"
             },
             "time": "2026-04-12T16:50:36+00:00"
-        },
-        {
-            "name": "mmoollllee/laravel-deployer",
-            "version": "0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mmoollllee/laravel-deployer.git",
-                "reference": "06eb3eb23e2571891249d5562601a57525a902af"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mmoollllee/laravel-deployer/zipball/06eb3eb23e2571891249d5562601a57525a902af",
-                "reference": "06eb3eb23e2571891249d5562601a57525a902af",
-                "shasum": ""
-            },
-            "require": {
-                "deployer/deployer": "^8.0",
-                "php": ">=8.3"
-            },
-            "suggest": {
-                "spatie/laravel-db-snapshots": "Required in the consuming app (local + remote) for the pull:db-refresh / pull:db-full tasks — provides the snapshot:* artisan commands."
-            },
-            "type": "library",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Moritz Graf",
-                    "email": "info@moritz-graf.de"
-                }
-            ],
-            "description": "Shared Deployer recipes for in-place Git deployment of Laravel apps on Plesk / managed hosting: DB-snapshot pull, storage sync, maintenance-safe deploy. Requires Deployer 8.",
-            "support": {
-                "source": "https://github.com/mmoollllee/laravel-deployer/tree/0.2.0",
-                "issues": "https://github.com/mmoollllee/laravel-deployer/issues"
-            },
-            "time": "2026-07-29T15:54:28+00:00"
         },
         {
             "name": "mockery/mockery",

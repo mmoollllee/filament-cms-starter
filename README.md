@@ -28,8 +28,9 @@ projektseitige Gerüst drumherum:
 - **Demo-Seeder** — Tenant auf der `APP_URL`-Domain, Superadmin, Seiten
   (Start, Über uns, Kontakt, Impressum, Datenschutz), Menüs, Layout-Presets
 - **Tooling** — Pest-Tests (Smoke, Kontaktformular, Wiring-Repros),
-  `mmoollllee/laravel-deployer`, DB-Snapshots, Boost-Konfiguration,
-  Diagnose-Commands (`app:send-test-mail`, `app:localize-tenant-domains`)
+  DB-Snapshots, Boost-Konfiguration, und `mmoollllee/laravel-deployer` — das
+  bringt neben den Deployer-Rezepten auch die beiden Diagnose-Commands
+  `app:send-test-mail` und `app:localize-tenant-domains` mit
 
 ## Neues Projekt starten
 
@@ -120,6 +121,13 @@ dep pull:files       # storage/app/public spiegeln
 dep shell            # SSH im Webroot, mit Deploy-Key und gepinntem PHP
 dep list             # alles Weitere (git:*, composer:*, logs*, artisan:*)
 ```
+
+Das Package liefert zwei Artisan-Befehle mit: `app:localize-tenant-domains`
+schreibt nach jedem DB-Pull die Tenant-Domains auf `*.test` um (hängt in
+`deploy.php` an `pull:db-*` und weigert sich außerhalb von local/testing), und
+`app:send-test-mail` schickt eine Testmail und gibt den Transport-Fehler im
+Klartext aus — gedacht für den Server: `dep shell`, dann `art app:send-test-mail`.
+Deshalb steht `mmoollllee/laravel-deployer` in `require`, nicht in `require-dev`.
 
 Die Mediathek-Dateien liegen unter `storage/app/public` und kommen über
 `dep pull:files`; die zugehörigen DB-Tabellen sind in `db_pull_include`
