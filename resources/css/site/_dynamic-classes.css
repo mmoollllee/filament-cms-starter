@@ -1,0 +1,16 @@
+/* Layout-Preset safelist: classes stored in the database (layout_presets.classes),
+   which Tailwind cannot discover by scanning source files.
+
+   Imported by BOTH bundles — resources/css/app.css (frontend) and
+   resources/css/filament/theme.css (panel). The Filament block builder renders
+   these same classes into its block previews, so a safelist that only reached the
+   frontend left every preview without height, rounding or aspect constraint. Keep
+   this the single place the list lives; a preset class added to one bundle only is
+   the failure mode this file exists to prevent.
+
+   Two kinds of preset class a safelist cannot rescue, both silent in the panel:
+   hand-written classes from the site CSS (import the partial that defines them, or
+   accept no preview effect), and classes referencing an app CSS variable that the
+   panel never defines — see the --site-visible-height stand-in in
+   resources/css/filament/theme.css. */
+@source inline("contents w-50 w-100 card card-glass card-dark card-accent card-soft card-surface card-transparent rounded-panel rounded-card bg-surface text-on-dark grid-cols-2 {lg:,md:,xl:}grid-cols-{2,3,4} grid-flow-col xl:grid-flow-col {lg:}grid-flow-dense col-span-{2,3,full} row-span-{2,3,full} {lg:}row-span-3 gap-{3,4,5,6,8} {xl:}gap-10 items-{start,center,end,stretch} {xl:}items-center h-full overflow-hidden flex flex-col justify-{end,center} self-start xl:sticky xl:top-24 max-w-3xl min-h-[var(--site-visible-height)] {xl:}min-h-[var(--site-visible-height)] -mt-{0,1,2,3,4,5} {xl:}mt-{0,1,2,3,4,5} max-h-[50vh] max-h-[60vh] xl:max-h-none xl:grid-cols-[minmax(0,50vw)_minmax(22rem,1fr)] xl:grid-cols-[minmax(0,0.95fr)_1.05fr] xl:grid-cols-[minmax(0,1.08fr)_minmax(22rem,0.92fr)] xl:grid-cols-[minmax(0,1fr)_20rem] gap-5 xl:grid-cols-[minmax(0,1.1fr)_20rem]");

@@ -4,7 +4,9 @@ namespace App\Livewire;
 
 use App\Mail\KontaktAnfrage;
 use App\Mail\KontaktBestaetigung;
+use App\Support\Content\Blocks\contact_form\ContactFormBlock;
 use Illuminate\Support\Facades\Mail;
+use Livewire\Attributes\Locked;
 use Mmoollllee\Cms\Support\Livewire\AbstractTenantAwareForm;
 use Mmoollllee\Cms\Support\Livewire\Concerns\WithSpamQuiz;
 
@@ -12,16 +14,41 @@ use Mmoollllee\Cms\Support\Livewire\Concerns\WithSpamQuiz;
  * General contact form. Spam protection: honeypot + a rotating, tenant-defined
  * security question + rate limit. Sends the inquiry to the tenant's contact
  * address and a confirmation copy to the sender.
+ *
+ * SECURITY: every property the SERVER fills in mount() carries #[Locked]. They
+ * are plain public properties, so without it the browser can rewrite them in
+ * the Livewire snapshot — and this form is public, so "the browser" means any
+ * anonymous visitor. $contactEmail is the sharp one: it feeds Mail::to(), so an
+ * unlocked property turns the site into an open relay that sends from the
+ * domain's verified MAIL_FROM_ADDRESS to any address the attacker picks.
+ * $sourceUrl is rendered into both mails and would allow content injection.
+ * Only $data (the actual form fields) and the honeypot may come from the client.
  */
 class KontaktForm extends AbstractTenantAwareForm
 {
     use WithSpamQuiz;
 
+    /**
+     * Measured as `contact-form-start` (first interaction, fired client-side by
+     * the attributes on the <form> tag) and `contact-form-submit` (successful
+     * submission), so the submit count reads as a completion rate. Renaming
+     * this starts a fresh series in Umami — events under the old name stay
+     * there. No-op without mmoollllee/filami.
+     */
+    protected ?string $analyticsName = 'contact-form';
+
+    #[Locked]
     public ?int $contentId = null;
 
+    /**
+     * Per-block recipient override, set server-side by the contact_form block
+     * ({@see ContactFormBlock}). Never client-supplied.
+     */
+    #[Locked]
     public ?string $contactEmail = null;
 
     /** Absolute URL of the page the form lives on — included in the operator mail. */
+    #[Locked]
     public ?string $sourceUrl = null;
 
     /** @var array<string, mixed> */
@@ -98,6 +125,13 @@ class KontaktForm extends AbstractTenantAwareForm
         $this->initSpamQuiz();
 
         $this->submitted = true;
+
+        // Counted only once the mails are out, so the dashboard number matches
+        // the inquiries actually received — a submission that fails validation
+        // or trips the honeypot never gets here. Pass categories only; event
+        // properties are stored next to the pageview in Umami, so nothing about
+        // the sender may go in here.
+        $this->trackConversion(['type' => 'general']);
     }
 
     public function render()

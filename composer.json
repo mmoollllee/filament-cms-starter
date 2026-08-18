@@ -15,18 +15,23 @@
         "laravel/framework": "^13.8",
         "laravel/tinker": "^3.0",
         "mmoollllee/filament-builder-title": "^0.3.0",
-        "mmoollllee/filament-cms": "^0.2",
-        "mmoollllee/filament-consent-control": "^0.1",
-        "spatie/laravel-db-snapshots": "^2.9"
+        "mmoollllee/filament-cms": "^0.15",
+        "mmoollllee/filament-consent-control": "^0.2",
+        "mmoollllee/filami": "^0.4",
+        "mmoollllee/filament-media-library-extensions": "^0.2",
+        "ralphjsmit/laravel-filament-media-library": "^4.1",
+        "spatie/laravel-db-snapshots": "^2.9",
+        "spatie/laravel-medialibrary": "^11.0"
     },
     "require-dev": {
-        "deployer/deployer": "^7.5",
+        "deployer/deployer": "^8.0",
         "fakerphp/faker": "^1.23",
         "filament/blueprint": "^2.1",
         "laravel/boost": "^2.0",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.24",
         "laravel/sail": "^1.41",
+        "mmoollllee/laravel-deployer": "^0.2.0",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^4.4",
@@ -94,7 +99,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "ralphjsmit/packages": true
         }
     },
     "minimum-stability": "stable",
@@ -114,6 +120,29 @@
             "name": "filament-builder-title",
             "type": "vcs",
             "url": "https://github.com/mmoollllee/filament-builder-title"
+        },
+        {
+            "name": "filament-media-library-extensions",
+            "type": "vcs",
+            "url": "https://github.com/mmoollllee/filament-media-library-extensions"
+        },
+        {
+            "name": "filami",
+            "type": "vcs",
+            "url": "https://github.com/mmoollllee/filami"
+        },
+        {
+            "name": "laravel-deployer",
+            "type": "vcs",
+            "url": "https://github.com/mmoollllee/laravel-deployer"
+        },
+        {
+            "name": "ralphjsmit/*",
+            "type": "composer",
+            "url": "https://satis.ralphjsmit.com",
+            "only": [
+                "ralphjsmit/*"
+            ]
         },
         {
             "name": "filament",

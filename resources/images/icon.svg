@@ -1,0 +1,7 @@
+<!-- Square placeholder mark, source of truth for the root icons in public/
+     (favicon.ico, apple-touch-icon*.png). Replace with the project's own mark and
+     regenerate — see "Projekt anpassen" in the README. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 60 60" role="img" aria-label="Logo">
+  <rect width="60" height="60" rx="14" fill="#0f172a"/>
+  <path d="M18 38c0-6 24-4 24-12 0-4-5-6-12-6s-12 2-12 6" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+</svg>

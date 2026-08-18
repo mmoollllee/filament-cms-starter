@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Database\Factories\TenantFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Mmoollllee\Cms\Concerns\Tenant\HasContents;
 use Mmoollllee\Cms\Concerns\Tenant\HasSpamQuestions;
@@ -12,6 +14,10 @@ use Mmoollllee\Cms\Enums\TenantVisibility;
 class Tenant extends Model implements \Mmoollllee\Cms\Contracts\Tenant
 {
     use HasContents;              // contents() + visibleContents()
+
+    /** @use HasFactory<TenantFactory> */
+    use HasFactory;
+
     use HasSpamQuestions;         // tenant-configured spam-protection questions
     use HasTenantUsers;           // users()/creator(), hasUser(), isVisibleTo()
     use InheritsBranding;         // resolved*() branding cascade + SEO defaults
@@ -28,6 +34,8 @@ class Tenant extends Model implements \Mmoollllee\Cms\Contracts\Tenant
         'brand_claim',
         'logo_path',
         'secondary_logo_path',
+        'mail_logo_path',
+        'favicon_path',
         'primary_color',
         'default_locale',
         'timezone',
@@ -48,6 +56,12 @@ class Tenant extends Model implements \Mmoollllee\Cms\Contracts\Tenant
         'default_og_image_path',
         'imprint_data',
         'privacy_data',
+        // Optional Umami analytics (mmoollllee/filami): per-tenant endpoint and
+        // website id, editable in the panel under "Statistik". Without them in
+        // $fillable the panel form discards the values without an error.
+        'umami_url',
+        'umami_website_id',
+        'umami_replay',
     ];
 
     /**
@@ -60,6 +74,7 @@ class Tenant extends Model implements \Mmoollllee\Cms\Contracts\Tenant
             'social_links' => 'array',
             'imprint_data' => 'array',
             'privacy_data' => 'array',
+            'umami_replay' => 'bool',
         ];
     }
 }

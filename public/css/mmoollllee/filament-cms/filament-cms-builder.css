@@ -63,6 +63,46 @@
     font-weight: 600;
 }
 
+/* Cap media inside a block preview, so a page stays scannable in the builder.
+   Nothing else bounds it: the preview container has no height of its own, so a
+   full-width <img> is as tall as its aspect ratio makes it — a portrait photo or
+   a 9:16 clip produces a preview several screens high and pushes every following
+   block out of view. object-fit (the preview templates set object-cover) turns
+   the cap into a crop rather than a squash.
+
+   The rule targets the MEDIA ELEMENT, not .fi-fo-builder-item-preview itself.
+   Layout presets render their max-height and min-height utilities onto the
+   preview's own container (specificity 0,1,0); a container rule here (0,2,0)
+   would silently beat all of them, including the xl:max-h-none escape hatches.
+   Capping the child leaves that override path intact.
+
+   Deliberately NOT wrapped in :where(): a utility class landing on the media
+   element should not be able to lift the cap by stylesheet order. Tune it per app
+   through the custom property instead — which also reaches a single block type:
+
+     .fi-fo-builder-item-preview { --cms-preview-media-max-height: 32rem; }
+
+   The default is viewport-relative, because "how much of the page do I still see
+   below this block" is a question about the editor's SCREEN, not about ems. A
+   fixed value is wrong at both ends: generous on a large monitor, and on a laptop
+   it leaves nothing but the one block. The bounds matter as much as the middle:
+
+   * floor 12rem — keeps a preview legible on a short viewport, and stays above
+     the media block's own min-h-40 (10rem) baseline. A cap BELOW that baseline
+     would leave the container taller than the image it holds, i.e. a gap.
+   * ceiling 32rem — past this a single block eats the screen again, which is the
+     whole thing this cap exists to prevent.
+   * dvh, not vh — the panel is used on tablets, where a collapsing browser
+     toolbar makes vh overshoot the space actually available. */
+.fi-fo-builder-item-preview {
+    --cms-preview-media-max-height: clamp(12rem, 45dvh, 32rem);
+}
+
+.fi-fo-builder-item-preview img,
+.fi-fo-builder-item-preview video {
+    max-height: var(--cms-preview-media-max-height);
+}
+
 /* The preview card is a click target (click = edit inline). Filament core sets
    `.fi-fo-builder-item-preview:not(.fi-interactive) { pointer-events: none }`
    (specificity 0,2,0) for its edit-overlay pattern — this selector must WIN
@@ -268,4 +308,221 @@
 
 .fi-fo-builder-item-inactive-pill:hover .fi-fo-builder-item-inactive-pill-activate {
     display: inline;
+}
+
+/* ── Link-suggestions dropdown ─────────────────────────────────────────────
+   Styled wrapper for the ContentPathSuggestions fields (link picker, button
+   groups, consumer link fields) — replaces the defstudio searchable-input
+   dropdown markup (see cms::filament.forms.link-suggestions-wrapper).
+   Two-line entries: Content title + path. */
+
+.cms-link-suggest {
+    position: relative;
+}
+
+.cms-link-suggest-dropdown {
+    position: absolute;
+    z-index: 20;
+    top: 100%;
+    inset-inline: 0;
+    margin-top: 0.375rem;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background-color: #fff;
+    padding: 0.25rem;
+    box-shadow:
+        0 0 0 1px rgb(0 0 0 / 0.06),
+        0 12px 24px -6px rgb(0 0 0 / 0.16),
+        0 4px 8px -4px rgb(0 0 0 / 0.1);
+}
+
+.cms-link-suggest-dropdown[x-cloak] {
+    display: none;
+}
+
+.dark .cms-link-suggest-dropdown {
+    background-color: rgb(24 24 27);
+    box-shadow:
+        0 0 0 1px rgb(255 255 255 / 0.1),
+        0 12px 24px -6px rgb(0 0 0 / 0.5);
+}
+
+.cms-link-suggest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-height: 16rem;
+    overflow-y: auto;
+}
+
+.cms-link-suggest-loading {
+    opacity: 0.5;
+}
+
+.cms-link-suggest-item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.4375rem 0.625rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.cms-link-suggest-item:hover {
+    background-color: rgb(0 0 0 / 0.04);
+}
+
+.dark .cms-link-suggest-item:hover {
+    background-color: rgb(255 255 255 / 0.06);
+}
+
+/* Keyboard selection: primary tint (color-mix keeps it palette-aware). */
+.cms-link-suggest-item-active,
+.cms-link-suggest-item-active:hover {
+    background-color: color-mix(in srgb, var(--primary-500) 12%, transparent);
+}
+
+.cms-link-suggest-item-icon {
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+    color: var(--gray-400);
+}
+
+.cms-link-suggest-item-active .cms-link-suggest-item-icon {
+    color: var(--primary-600);
+}
+
+.dark .cms-link-suggest-item-active .cms-link-suggest-item-icon {
+    color: var(--primary-400);
+}
+
+.cms-link-suggest-item-text {
+    display: grid;
+    min-width: 0;
+}
+
+.cms-link-suggest-item-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    color: var(--gray-950);
+}
+
+.dark .cms-link-suggest-item-title {
+    color: var(--gray-200);
+}
+
+.cms-link-suggest-item-path {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--gray-500);
+}
+
+.dark .cms-link-suggest-item-path {
+    color: var(--gray-400);
+}
+
+/* ── Link bubble ───────────────────────────────────────────────────────────
+   Floating "Bearbeiten"/"Entfernen" tooltip shown when the caret sits inside
+   an existing link (tiptap-extensions/link-bubble.js). Appended to <body>,
+   positioned fixed at the link's start coordinates. */
+
+.cms-link-bubble {
+    position: fixed;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    max-width: 26rem;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    padding: 0.375rem 0.625rem;
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+    box-shadow:
+        0 0 0 1px rgb(0 0 0 / 0.08),
+        0 8px 20px -6px rgb(0 0 0 / 0.2);
+}
+
+.dark .cms-link-bubble {
+    background-color: rgb(24 24 27);
+    box-shadow:
+        0 0 0 1px rgb(255 255 255 / 0.1),
+        0 8px 20px -6px rgb(0 0 0 / 0.6);
+}
+
+.cms-link-bubble-href {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 14rem;
+    color: var(--gray-500);
+}
+
+.dark .cms-link-bubble-href {
+    color: var(--gray-400);
+}
+
+.cms-link-bubble-btn {
+    flex-shrink: 0;
+    cursor: pointer;
+    border: 0;
+    background: none;
+    padding: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--primary-600);
+}
+
+.cms-link-bubble-btn:hover {
+    text-decoration: underline;
+}
+
+.dark .cms-link-bubble-btn {
+    color: var(--primary-400);
+}
+
+/* The remove action reads as destructive. */
+.cms-link-bubble-btn:last-child {
+    color: var(--danger-600);
+}
+
+.dark .cms-link-bubble-btn:last-child {
+    color: var(--danger-400);
+}
+
+/* ── Editorial buttons in the editor ───────────────────────────────────────
+   <button> markup kept by tiptap-extensions/html-button.js (e.g. the consent
+   banner's .consent-control--open). A real button inside contenteditable
+   grabs the click and focuses itself, so the caret never reaches the label:
+   let clicks fall through to the text instead, and show the element as the
+   markup it is rather than as a native control.
+
+   Scoped to text blocks, NOT to .tiptap as a whole: Filament renders its own
+   <button>s inside the editor content root — the custom block's edit/delete
+   icons and the details toggle — and those must stay clickable. The mark is
+   inline, so editorial buttons only ever sit inside a text block. */
+
+.fi-fo-rich-editor .tiptap :is(p, h1, h2, h3, h4, h5, h6, li, td, th, blockquote) button {
+    pointer-events: none;
+    border: 1px dashed var(--gray-300);
+    border-radius: 0.375rem;
+    background: none;
+    padding: 0.125rem 0.5rem;
+    font: inherit;
+    color: inherit;
+}
+
+.dark .fi-fo-rich-editor .tiptap :is(p, h1, h2, h3, h4, h5, h6, li, td, th, blockquote) button {
+    border-color: var(--gray-600);
 }

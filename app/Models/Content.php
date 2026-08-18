@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Blendbyte\FilamentResourceLock\Models\Concerns\HasLocks;
+use Database\Factories\ContentFactory;
 use Datlechin\FilamentMenuBuilder\Contracts\MenuPanelable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,17 +15,27 @@ use Mmoollllee\Cms\Concerns\Content\AssignsCurrentTenant;
 use Mmoollllee\Cms\Concerns\Content\ConvertsUploadedVideos;
 use Mmoollllee\Cms\Concerns\Content\GeneratesPathAndSlug;
 use Mmoollllee\Cms\Concerns\Content\HasPublishingStatus;
+use Mmoollllee\Cms\Concerns\Content\ProvidesMenuPanel;
 use Mmoollllee\Cms\Concerns\Content\ResolvesLayoutPresets;
+use Mmoollllee\Cms\Concerns\HasDraft;
+use Mmoollllee\Cms\Concerns\HasVersions;
 use Mmoollllee\Cms\Enums\ContentVisibility;
 use Mmoollllee\Cms\Support\AssetUrlResolver;
-use Mmoollllee\Cms\Support\Tenancy\CurrentTenant;
 
 class Content extends Model implements \Mmoollllee\Cms\Contracts\Content, MenuPanelable
 {
     use AssignsCurrentTenant;     // fills tenant_id from the resolved host tenant
     use ConvertsUploadedVideos;   // dispatches the video re-encode job on save
     use GeneratesPathAndSlug;     // path/slug generation incl. non-routable types
+    use HasDraft;                 // "Entwurf speichern" stash + Vorschau overlay
+
+    /** @use HasFactory<ContentFactory> */
+    use HasFactory;
+
+    use HasLocks;                 // editorial locking — one editor per record at a time
     use HasPublishingStatus;      // status(), resolved_status, scopePublished/VisibleTo/OfType
+    use HasVersions;              // snapshot per applied change + Revisionen/restore
+    use ProvidesMenuPanel;        // MenuPanelable: "Inhalte" source of the menu builder
     use ResolvesLayoutPresets;    // resolvedLayoutPreset() for the frontend
 
     /**
@@ -164,34 +177,5 @@ class Content extends Model implements \Mmoollllee\Cms\Contracts\Content, MenuPa
         }
 
         return null;
-    }
-
-    public function getMenuPanelName(): string
-    {
-        return 'Inhalte';
-    }
-
-    public function getMenuPanelTitleColumn(): string
-    {
-        return 'title';
-    }
-
-    public function getMenuPanelUrlUsing(): callable
-    {
-        return fn (self $content): string => $content->resolvedPath() ?? '/';
-    }
-
-    public function getMenuPanelModifyQueryUsing(): callable
-    {
-        return function (Builder $query): Builder {
-            $tenant = app(CurrentTenant::class)->get();
-
-            return $query
-                ->when($tenant !== null, fn (Builder $q): Builder => $q->where('tenant_id', $tenant->getKey()))
-                ->whereIn('content_type', ['default.section', 'default.page'])
-                ->whereNotNull('path')
-                ->orderBy('sort')
-                ->orderBy('title');
-        };
     }
 }

@@ -41,8 +41,20 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            // Relative on purpose: an APP_URL-derived absolute URL would hand
+            // every tenant the main site's host, so uploads on a second tenant
+            // domain would be served cross-origin (or 404 behind a redirect).
+            'url' => '/storage',
             'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        // spatie/laravel-db-snapshots writes here (config/db-snapshots.php), and
+        // `dep pull:db-refresh` downloads from it.
+        'dbdumps' => [
+            'driver' => 'local',
+            'root' => database_path('dumps'),
             'throw' => false,
             'report' => false,
         ],

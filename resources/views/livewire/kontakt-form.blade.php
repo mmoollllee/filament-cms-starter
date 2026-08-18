@@ -6,7 +6,9 @@
         </div>
     @endif
 
-        <form wire:submit="submit" class="grid gap-4">
+        {{-- The attributes mark this form for the "contact-form-start" event, so
+             the submit count reads as a completion rate. Empty without filami. --}}
+        <form wire:submit="submit" class="grid gap-4" {!! $this->analyticsAttributes() !!}>
             {{-- Honeypot --}}
             <div class="hidden" aria-hidden="true">
                 <label>Website

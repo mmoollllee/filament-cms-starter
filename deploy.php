@@ -1,15 +1,45 @@
 <?php
 
+/**
+ * In-place git deploy on Plesk / managed hosting, plus snapshot-based DB and
+ * storage pulls for local development. Everything mechanical lives in
+ * mmoollllee/laravel-deployer; this file is host + project configuration.
+ *
+ *   dep deploy          publish (git pull, composer, assets, migrate, optimize)
+ *   dep deploy:quick    code-only (git pull + optimize) — blade/config changes
+ *   dep setup           non-destructive first-time bootstrap of a fresh remote
+ *   dep pull:db-refresh copy the db_pull_include tables into the local DB
+ *   dep pull:files      mirror the remote storage folders
+ *   dep shell           SSH into the webroot with deploy key + pinned PHP
+ *   dep list            everything else (git:*, composer:*, logs*, artisan:*)
+ *
+ * `dep` itself must be Deployer 8: composer global require deployer/deployer:^8.0
+ */
+
 namespace Deployer;
 
-require 'recipe/laravel.php';
-require 'contrib/rsync.php';
+require 'vendor/mmoollllee/laravel-deployer/recipe/app.php';
 
-// Tables included in `dep pull:db-refresh` (content, no users/media binaries).
+// Host — adjust per project.
+host('example.com')
+    ->set('remote_user', 'deploy')
+    ->set('deploy_path', '~/example.com')
+    // Plesk: pin the PHP binary the site runs on (optional; defaults to `php`).
+    // ->set('remote_php', '/opt/plesk/php/8.3/bin/php')
+    // Deploy key for `git pull` (optional; omit to use ~/.ssh/config).
+    ->set('git_ssh_key', '~/.ssh/example_ed25519');
+
+// Tables copied by `dep pull:db-refresh` — editorial content, no user accounts
+// and no media binaries. Uncomment the media/versions tables once the library is
+// in use and you want the local copy to match production; they are large, and
+// the files themselves come from `dep pull:files`.
 set('db_pull_include', [
     'contents',
     'fragments',
+    // 'filament_media_library',
+    // 'filament_media_library_folders',
     'layout_presets',
+    // 'media',
     'menu_items',
     'menu_locations',
     'menus',
@@ -18,103 +48,24 @@ set('db_pull_include', [
     'tenant_user',
     'tenants',
     // 'users',
+    // 'versions',
 ]);
+
+// Storage folders synced by `dep pull:files` / `dep push:files`.
 set('files', [
     'storage/app/public/',
 ]);
 
-set('allow_anonymous_stats', false);
+// Post-deploy steps. Queue workers otherwise keep pre-deploy code (and job
+// FQCNs) in memory.
+set('deploy_cache_clear', true);
+set('deploy_queue_restart', true);
 
-// Hosts — adjust per project.
-host('example.com')
-    ->set('remote_user', 'deploy')
-    ->set('deploy_path', '~/example.com');
-
-desc('DB pull snapshot (remote → local)');
-task('pull:db-refresh', function () {
-    $tables = get('db_pull_include');
-    if (empty($tables)) {
-        writeln('<error>No tables defined for pull. Set db_pull_include in deploy.php</error>');
-
-        return;
-    }
-
-    $longRunning = [
-        'timeout' => null,
-        'real_time_output' => true,
-    ];
-
-    cd('{{deploy_path}}');
-    run('php artisan snapshot:create --table='.implode(' --table=', $tables), $longRunning);
-
-    // Find newest snapshot file on remote, download, keep remote clean.
-    $remote = run('ls -1t {{deploy_path}}/database/dumps | head -n1');
-
-    download("{{deploy_path}}/database/dumps/{$remote}", "database/dumps/{$remote}");
-    run('php artisan snapshot:cleanup --keep=1');
-
-    $dump = str_replace('.sql.gz', '', $remote);
-
-    runLocally("php artisan snapshot:load {$dump} --drop-tables=0 --stream --force", $longRunning);
-    runLocally(
-        'php -r "require \'vendor/autoload.php\'; \$app = require \'bootstrap/app.php\'; \$app->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); Illuminate\\Support\\Facades\\DB::statement(\"UPDATE tenants SET primary_domain = CONCAT(primary_domain, \'.test\') WHERE primary_domain NOT LIKE \'%.test\' AND primary_domain IS NOT NULL AND primary_domain != \'\'\");"'
-    );
-    runLocally('php artisan optimize');
-    runLocally('php artisan cache:clear');
-    writeln('<info>✓ DB refresh pulled via snapshots.</info>');
+// Rewrite tenant domains to *.test after every DB pull, so a production dump is
+// reachable under Herd.
+desc('Lokale Tenant-Domains auf *.test umschreiben');
+task('pull:localize-domains', function () {
+    runLocally('php artisan app:localize-tenant-domains');
 });
-
-task('pull:db-full', function () {
-    $longRunning = [
-        'timeout' => null,
-        'real_time_output' => true,
-    ];
-
-    cd('{{deploy_path}}');
-    run('php artisan snapshot:create', $longRunning);
-
-    $remote = run('ls -1t {{deploy_path}}/database/dumps | head -n1');
-
-    download("{{deploy_path}}/database/dumps/{$remote}", "database/dumps/{$remote}");
-    run('php artisan snapshot:cleanup --keep=1');
-
-    $dump = str_replace('.sql.gz', '', $remote);
-
-    runLocally("php artisan snapshot:load {$dump} --stream --force", $longRunning);
-    runLocally(
-        'php -r "require \'vendor/autoload.php\'; \$app = require \'bootstrap/app.php\'; \$app->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); Illuminate\\Support\\Facades\\DB::statement(\"UPDATE tenants SET primary_domain = CONCAT(primary_domain, \'.test\') WHERE primary_domain NOT LIKE \'%.test\' AND primary_domain IS NOT NULL AND primary_domain != \'\'\");"'
-    );
-    runLocally('php artisan optimize');
-    runLocally('php artisan cache:clear');
-    writeln('<info>✓ Full DB pulled via snapshots.</info>');
-});
-
-desc('Pull Storage (remote → local)');
-task('pull:files', function () {
-    foreach (get('files') as $folder) {
-        writeln("<info>Downloading {$folder}:</info>");
-        download("{{deploy_path}}/{$folder}", $folder, ['options' => ['--delete']]);
-    }
-    writeln('<info>✓ Files pulled.</info>');
-});
-
-Deployer::get()->tasks->remove('deploy');
-desc('Publish code on remote (git pull, composer install, npm i & build, migrate, optimize)');
-task('deploy', function () {
-    cd('{{deploy_path}}');
-    run('git pull');
-    run('composer install --no-dev --optimize-autoloader');
-    run('npm i');
-    run('npm run build');
-    run('php artisan migrate --force');
-    run('php artisan optimize');
-    run('php artisan cache:clear');
-    writeln('<info>✓ Git Pull, Composer Install, NPM Install & Build, Migrate, Optimize.</info>');
-});
-
-desc('Reset remote repository');
-task('reset:hard', function () {
-    cd('{{deploy_path}}');
-    run('git reset --hard');
-    writeln('<info>✓ Git Reset hard.</info>');
-});
+after('pull:db-refresh', 'pull:localize-domains');
+after('pull:db-full', 'pull:localize-domains');

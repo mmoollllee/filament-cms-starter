@@ -7,8 +7,8 @@
 @source '../**/*.js';
 @source '../../vendor/mmoollllee/laravel-consent-control/resources/views/components/**/*.blade.php';
 
-/* Layout-Preset Safelist: Classes stored in database that Tailwind cannot detect from source files. */
-@source inline("contents w-50 w-100 card card-glass card-dark card-accent card-soft card-surface card-transparent rounded-panel rounded-card bg-surface text-on-dark grid-cols-2 {lg:,md:,xl:}grid-cols-{2,3,4} grid-flow-col xl:grid-flow-col {lg:}grid-flow-dense col-span-{2,3,full} row-span-{2,3,full} {lg:}row-span-3 gap-{3,4,5,6,8} {xl:}gap-10 items-{start,center,end,stretch} {xl:}items-center h-full overflow-hidden flex flex-col justify-{end,center} self-start xl:sticky xl:top-24 max-w-3xl min-h-[var(--site-visible-height)] {xl:}min-h-[var(--site-visible-height)] -mt-{0,1,2,3,4,5} {xl:}mt-{0,1,2,3,4,5} max-h-[50vh] max-h-[60vh] xl:max-h-none xl:grid-cols-[minmax(0,50vw)_minmax(22rem,1fr)] xl:grid-cols-[minmax(0,0.95fr)_1.05fr] xl:grid-cols-[minmax(0,1.08fr)_minmax(22rem,0.92fr)] xl:grid-cols-[minmax(0,1fr)_20rem] gap-5 xl:grid-cols-[minmax(0,1.1fr)_20rem]");
+/* Layout-Preset safelist — shared with the Filament theme, see the file itself. */
+@import './site/_dynamic-classes.css';
 
 @import './site/_design-tokens.css';
 

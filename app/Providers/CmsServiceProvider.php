@@ -36,5 +36,19 @@ class CmsServiceProvider extends ServiceProvider
         // Cms::useFooterTagline('Mein Claim.');
         // Cms::enableContentPageHeader();
         // Cms::useMenuLocations(['header' => 'Hauptmenü', 'footer' => 'Sekundär-Navigation']);
+
+        // Media library ("Mediathek"): wired automatically because
+        // ralphjsmit/laravel-filament-media-library is installed — the picker UX
+        // comes from mmoollllee/filament-media-library-extensions. Knobs:
+        // Cms::disableMediaLibrary();               // classic uploads instead
+        // Cms::useMediaDisk('media-library');       // e.g. a private, policy-served disk
+        // Cms::useMediaDriver(MyDriver::class);     // scope, conversions, accepted types
+        // Cms::useMediaFolderNames([MediaFolders::BRANDING => 'Marke']);
+
+        // Umami analytics (mmoollllee/filami) needs no registration here: the
+        // engine auto-provisions one website per tenant, renders the tracking
+        // snippet in the site shell and adds the "Statistiken" panel page as
+        // soon as the package is installed. Configure it in .env / per tenant
+        // under Seiten-Einstellungen → Statistik.
     }
 }
