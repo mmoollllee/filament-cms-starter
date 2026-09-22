@@ -41,6 +41,12 @@ return [
     |                    many times (anti-bot; the current visitor is still redirected).
     | auto_status        HTTP status for machine-created redirects (302 = temporary/revertible).
     | confirmed_status   status an automatic redirect is promoted to once an admin edits it.
+    | on_rename          'keep' leaves a permanent redirect behind whenever a page's path
+    |                    moves — from the panel, a revision restore, Duplizieren, a reorder,
+    |                    an import or the console alike, since the move is what costs the
+    |                    address and none of those can be asked. 'never' writes none.
+    |                    Taking an address BACK from a redirect is the editor's decision and
+    |                    is offered on the Pfad field itself.
     | prune_after_days   delete low-traffic 404 logs older than this many days.
     | prune_min_hits     404 logs with fewer hits than this are eligible for pruning.
     | ignore_extensions  request paths ending in these are never logged (bot/probe noise).
@@ -56,9 +62,23 @@ return [
         'min_hits' => 2,
         'auto_status' => 302,
         'confirmed_status' => 301,
+        'on_rename' => 'keep',
         'prune_after_days' => 90,
         'prune_min_hits' => 3,
         'ignore_extensions' => ['php', 'env', 'asp', 'aspx', 'cgi', 'jsp', 'sql', 'bak'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tenant invitations
+    |--------------------------------------------------------------------------
+    | expires_after_days  how long an invitation link stays valid. It bounds the
+    |        signed accept URL as well as the model check, so a lapsed link is
+    |        refused by the signature before any row is read. An expired
+    |        invitation stays in the panel list and can be re-sent.
+    */
+    'invitations' => [
+        'expires_after_days' => (int) env('CMS_INVITATIONS_EXPIRE_DAYS', 14),
     ],
 
     /*
@@ -86,6 +106,41 @@ return [
     */
     'locking' => [
         'timeout' => (int) env('CMS_LOCK_TIMEOUT', 180),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Media conversions (CmsMediaLibraryDriver)
+    |--------------------------------------------------------------------------
+    | Governs the image derivatives the media library pre-generates. Storage
+    | cost scales with BOTH values: every library image yields the `responsive`,
+    | `800`, `400`, `thumb` and `og` conversions plus one srcset candidate per
+    | responsive step, so an uncapped 4000px original can occupy 25x its own
+    | size on disk.
+    |
+    | max_width  longest edge (px) the `responsive` conversion — and with it
+    |        every srcset candidate derived from it — is capped to. Applied as
+    |        Fit::Max, so smaller images are never upscaled and aspect ratios
+    |        are preserved. Sized against real viewports: a 1920px candidate
+    |        already covers a 2x DPR phone and a 1x desktop. 0 disables the cap
+    |        and restores the vendor default (candidates up to original size).
+    | format  image format for the frontend conversions (`responsive`, `800`,
+    |        `400`, `thumb`) and, because responsive candidates inherit the
+    |        format of the conversion they derive from, for the srcset too.
+    |        `webp` roughly halves the bytes at comparable quality. Set to
+    |        `jpg` for installs that must serve pre-WebP clients.
+    | og_format  kept SEPARATE from `format` on purpose: `og` feeds og:image,
+    |        and messenger link-preview crawlers are the last holdout of
+    |        WebP support. Change only if no one shares links to the site.
+    |
+    | Changing either value affects NEW conversions only. Re-run
+    | `php artisan media-library:regenerate` for existing media, then
+    | `php artisan cms:media:prune` to delete the superseded files.
+    */
+    'media' => [
+        'max_width' => (int) env('CMS_MEDIA_MAX_WIDTH', 1920),
+        'format' => env('CMS_MEDIA_FORMAT', 'webp'),
+        'og_format' => env('CMS_MEDIA_OG_FORMAT', 'jpg'),
     ],
 
     /*

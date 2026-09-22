@@ -129,6 +129,12 @@ schreibt nach jedem DB-Pull die Tenant-Domains auf `*.test` um (hängt in
 Klartext aus — gedacht für den Server: `dep shell`, dann `art app:send-test-mail`.
 Deshalb steht `mmoollllee/laravel-deployer` in `require`, nicht in `require-dev`.
 
+`pull:db-full` leaves a production dump in `database/dumps/`, which is deliberately
+not gitignored at the root (it stays visible in `git status` until deleted). The
+pre-commit hook in `.githooks/` refuses to commit it; `core.hooksPath` is per-clone
+config, so run `php artisan app:install-git-hooks` once after cloning (`composer
+setup` does it for you).
+
 Die Mediathek-Dateien liegen unter `storage/app/public` und kommen über
 `dep pull:files`; die zugehörigen DB-Tabellen sind in `db_pull_include`
 auskommentiert — beides zusammen einkommentieren, sonst zeigen lokale

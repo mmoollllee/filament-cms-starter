@@ -275,7 +275,24 @@ return [
 
     'payload' => [
         'max_size' => 1024 * 1024,   // 1MB - maximum request payload size in bytes
-        'max_nesting_depth' => 15,   // Maximum depth of dot-notation property paths
+
+        // Dot-path depth of a single property update. The block editor's real
+        // paths are far deeper than a plain form's, because three nestings stack:
+        //
+        //   data.blocks.{uuid}.data          builder item          (4)
+        //   .blocks.{uuid}.data              nested builder item   (7)
+        //   ._content_editor                 rich editor state     (8)
+        //   .content.0.content.1 …           ProseMirror nodes     (2 per level)
+        //   .text                            the leaf
+        //
+        // A bullet list inside a section's text block already needs 17 and a
+        // table 21 — Livewire's default of 15 makes every such keystroke throw
+        // MaxNestingDepthExceededException, which the panel answers with "Fehler
+        // beim Laden der Seite" instead of saving. Each further list level costs
+        // 2, a third builder level 3, a table cell 4, so the value keeps headroom
+        // above the deepest shape the block library can produce rather than
+        // tracking today's worst case.
+        'max_nesting_depth' => 40,   // Maximum depth of dot-notation property paths
         'max_calls' => 50,           // Maximum method calls per request
         'max_components' => 20,      // Maximum components per batch request
     ],
