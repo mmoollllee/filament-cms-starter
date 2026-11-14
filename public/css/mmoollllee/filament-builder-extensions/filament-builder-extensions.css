@@ -1,3 +1,6 @@
+/*
+ * Title (->title() on a Block or Repeater): the editable input in an item's header.
+ */
 .fi-fo-builder-item-header-label:has(.fi-builder-title-wrapper),
 .fi-fo-repeater-item-header-label:has(.fi-builder-title-wrapper) {
     display: inline-flex;
@@ -65,4 +68,36 @@
     color: rgb(239 68 68);
     font-size: 0.75em;
     white-space: nowrap;
+}
+
+/*
+ * Transfer (->transferGroup()): an empty list of the group renders no list at all, so
+ * while an item is dragged a zone stands in for it (builder-extensions.js).
+ */
+.fi-be-drop-zone {
+    display: block;
+    min-height: 3rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px dashed rgb(156 163 175 / 0.8);
+    border-radius: 0.75rem;
+}
+
+.fi-be-drop-zone:empty::before {
+    content: attr(data-label);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    font-size: 0.875rem;
+    color: rgb(107 114 128);
+}
+
+.dark .fi-be-drop-zone {
+    border-color: rgb(255 255 255 / 0.2);
+}
+
+.dark .fi-be-drop-zone:empty::before {
+    color: rgb(156 163 175);
 }

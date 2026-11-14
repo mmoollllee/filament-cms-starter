@@ -14,11 +14,10 @@
         "php": "^8.3",
         "laravel/framework": "^13.8",
         "laravel/tinker": "^3.0",
-        "mmoollllee/filament-builder-title": "^0.3.0",
-        "mmoollllee/filament-cms": "^0.23.0",
+        "mmoollllee/filament-cms": "^0.24",
         "mmoollllee/filament-consent-control": "^0.2",
-        "mmoollllee/filami": "^0.4",
         "mmoollllee/filament-media-library-extensions": "^0.2",
+        "mmoollllee/filami": "^0.4",
         "mmoollllee/laravel-deployer": "^0.5",
         "ralphjsmit/laravel-filament-media-library": "^4.1",
         "spatie/laravel-db-snapshots": "^2.9",
@@ -102,6 +101,9 @@
             "pestphp/pest-plugin": true,
             "php-http/discovery": true,
             "ralphjsmit/packages": true
+        },
+        "platform": {
+            "php": "8.3"
         }
     },
     "minimum-stability": "stable",
@@ -125,7 +127,7 @@
         {
             "name": "filament-builder-title",
             "type": "vcs",
-            "url": "https://github.com/mmoollllee/filament-builder-title"
+            "url": "https://github.com/mmoollllee/filament-builder-extensions"
         },
         {
             "name": "filament-media-library-extensions",
