@@ -22,11 +22,7 @@
     {{-- Abstract placeholder for the live KontaktForm (Livewire) — the real, stateful
          form only renders on the frontend, so here we just represent it (like the
          Fragment block) instead of rendering a half-broken skeleton. --}}
-    <div class="flex items-center gap-3 rounded-card border border-dashed border-slate-300 p-4 text-sm text-slate-500">
-        @svg('heroicon-o-envelope', 'h-6 w-6 shrink-0 text-slate-400')
-        <span>
-            <span class="font-medium text-slate-700">Kontaktformular</span>
-            <span class="mx-1 text-slate-400">&rarr;</span>{{ $recipient }}
-        </span>
-    </div>
+    <x-cms::block-placeholder icon="heroicon-o-envelope" label="Kontaktformular">
+        {{ $recipient }}
+    </x-cms::block-placeholder>
 </div>

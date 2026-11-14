@@ -66,6 +66,9 @@ set('deploy_queue_restart', true);
 desc('Lokale Tenant-Domains auf *.test umschreiben');
 task('pull:localize-domains', function () {
     runLocally('php artisan app:localize-tenant-domains');
+    // The host → tenant lookup and the pages are cached forever — drop the pulled
+    // tenants' caches, or the local copy keeps serving the pre-pull rows.
+    runLocally('php artisan cms:clear-tenant-cache');
 });
 after('pull:db-refresh', 'pull:localize-domains');
 after('pull:db-full', 'pull:localize-domains');

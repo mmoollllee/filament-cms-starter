@@ -30,9 +30,16 @@ class CmsServiceProvider extends ServiceProvider
             ContactFormBlock::class,
         ]);
 
+        // Notice banners ("Hinweise": company holidays, public holidays). The package's page
+        // template shows them on the homepage (the onepager's start section). An app
+        // with its own templates places <x-cms::notices /> and names them in `on:`.
+        Cms::enableNotices();
+
         // Optional wiring — uncomment to customize:
+        // Cms::registerBlocks([...Cms::defaultBlocks(), ContactFormBlock::class, \Mmoollllee\Cms\Support\Content\Blocks\fragment\FragmentBlock::class]); // + fragment embed
         // Cms::allowSectionChildren('my-site-key', ['text', 'media', 'listing']);
         // Cms::allowRootBlocks('my-site-key', ['section', 'hero']);
+        // Cms::templateEmbeds('content.home', fragments: ['kontaktbox'], contentTypes: ['news.article']); // "Außerdem auf dieser Seite"
         // Cms::useFooterTagline('Mein Claim.');
         // Cms::enableContentPageHeader();
         // Cms::useMenuLocations(['header' => 'Hauptmenü', 'footer' => 'Sekundär-Navigation']);

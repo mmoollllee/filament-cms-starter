@@ -65,4 +65,14 @@ nav[data-role="header-breadcrumbs"] > a {
             @apply text-surface hover:text-muted-text
         }
     }
+
+    /* Tap feedback: touch screens get no hover, so a pressed entry takes the
+       hover look (iOS needs the touchstart listener in app.js for :active). */
+    & .flyout-btn:active {
+        @apply bg-surface text-white;
+    }
+
+    & .flyout-link:active {
+        @apply text-surface;
+    }
 }

@@ -5,6 +5,7 @@ use App\Mail\KontaktAnfrage;
 use App\Mail\KontaktBestaetigung;
 use App\Models\Tenant;
 use Database\Seeders\DatabaseSeeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use Mmoollllee\Cms\Support\Tenancy\CurrentTenant;
@@ -37,6 +38,19 @@ it('sends the inquiry and a confirmation copy on valid submit', function () {
     // Company gets the inquiry; the sender gets a confirmation copy.
     Mail::assertSent(KontaktAnfrage::class);
     Mail::assertSent(KontaktBestaetigung::class, fn ($mail) => $mail->hasTo('max@example.com'));
+});
+
+it('stamps the inquiry with the local time of the site', function () {
+    Mail::fake();
+    Carbon::setTestNow(Carbon::parse('2026-09-25 07:30:00', 'UTC'));
+
+    Livewire::test(KontaktForm::class)
+        ->set(validKontaktData())
+        ->call('submit')
+        ->assertHasNoErrors();
+
+    // 07:30 UTC is 09:30 in a German summer.
+    Mail::assertSent(KontaktAnfrage::class, fn (KontaktAnfrage $mail): bool => $mail->data['submitted_at'] === '25.09.2026 09:30');
 });
 
 it('rejects a submit without required fields', function () {

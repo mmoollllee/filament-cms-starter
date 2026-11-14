@@ -26,5 +26,9 @@ import { init as initScrollZoom } from './features/scroll-zoom';
 initScrollAnimate();
 initScrollZoom();
 
+// iOS Safari applies :active on touch only below a touch listener — without it
+// the pressed look of the menu entries never shows.
+document.addEventListener('touchstart', () => {}, { passive: true });
+
 // Consent runtime, bundled here; <x-consent-control-scripts :assets="false" /> only boots it.
 import '../../vendor/mmoollllee/laravel-consent-control/resources/dist/js/consent-control.js';

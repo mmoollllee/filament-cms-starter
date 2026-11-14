@@ -59,6 +59,10 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
+            // A fixed session zone: TIMESTAMP columns convert through it, so +00:00
+            // keeps the time the app writes as it is — and a dump pulled from the
+            // server reads the same on a Mac, whose SYSTEM zone would shift it.
+            'timezone' => env('DB_TIMEZONE', '+00:00'),
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
@@ -79,6 +83,10 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
+            // A fixed session zone: TIMESTAMP columns convert through it, so +00:00
+            // keeps the time the app writes as it is — and a dump pulled from the
+            // server reads the same on a Mac, whose SYSTEM zone would shift it.
+            'timezone' => env('DB_TIMEZONE', '+00:00'),
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],

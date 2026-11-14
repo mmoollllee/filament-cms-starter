@@ -15,7 +15,7 @@
         "laravel/framework": "^13.8",
         "laravel/tinker": "^3.0",
         "mmoollllee/filament-builder-title": "^0.3.0",
-        "mmoollllee/filament-cms": "^0.20",
+        "mmoollllee/filament-cms": "^0.23.0",
         "mmoollllee/filament-consent-control": "^0.2",
         "mmoollllee/filami": "^0.4",
         "mmoollllee/filament-media-library-extensions": "^0.2",

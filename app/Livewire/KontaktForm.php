@@ -21,8 +21,9 @@ use Mmoollllee\Cms\Support\Livewire\Concerns\WithSpamQuiz;
  * anonymous visitor. $contactEmail is the sharp one: it feeds Mail::to(), so an
  * unlocked property turns the site into an open relay that sends from the
  * domain's verified MAIL_FROM_ADDRESS to any address the attacker picks.
- * $sourceUrl is rendered into both mails and would allow content injection.
- * Only $data (the actual form fields) and the honeypot may come from the client.
+ * $sourceUrl (declared and locked by the base class) is rendered into both
+ * mails and would allow content injection. Only $data (the actual form fields)
+ * and the honeypot may come from the client.
  */
 class KontaktForm extends AbstractTenantAwareForm
 {
@@ -47,10 +48,6 @@ class KontaktForm extends AbstractTenantAwareForm
     #[Locked]
     public ?string $contactEmail = null;
 
-    /** Absolute URL of the page the form lives on — included in the operator mail. */
-    #[Locked]
-    public ?string $sourceUrl = null;
-
     /** @var array<string, mixed> */
     public array $data = [
         'name' => '',
@@ -64,8 +61,7 @@ class KontaktForm extends AbstractTenantAwareForm
     {
         $this->contentId = $contentId;
         $this->contactEmail = $contactEmail;
-        // Captured during the initial page render → the URL of the page the form is on.
-        $this->sourceUrl = $sourceUrl ?: request()->url();
+        $this->captureSourceUrl($sourceUrl);
 
         $this->initSpamQuiz();
     }
@@ -105,7 +101,7 @@ class KontaktForm extends AbstractTenantAwareForm
             'email' => trim((string) $this->data['email']),
             'phone' => trim((string) $this->data['phone']),
             'message' => trim((string) $this->data['message']),
-            'submitted_at' => now()->format('d.m.Y H:i'),
+            'submitted_at' => $this->submittedAt(),
             'source_url' => $this->sourceUrl,
         ];
 
