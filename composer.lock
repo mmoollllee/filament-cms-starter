@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "61fd071c4aaa007fa2bd6f465b56c68c",
+    "content-hash": "c18d4681e2cf4c00d3e55b0ae1164c90",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -4990,16 +4990,16 @@
         },
         {
             "name": "mmoollllee/filament-cms",
-            "version": "v0.24.1",
+            "version": "v0.25.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mmoollllee/filament-cms",
-                "reference": "4976b914eaa31dd67a41a9f0341801c0aa0c836a"
+                "url": "https://github.com/mmoollllee/filament-cms.git",
+                "reference": "a896828b6da2d1a2ffb55a06d90f56a80fd012f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mmoollllee/filament-cms/zipball/4976b914eaa31dd67a41a9f0341801c0aa0c836a",
-                "reference": "4976b914eaa31dd67a41a9f0341801c0aa0c836a",
+                "url": "https://api.github.com/repos/mmoollllee/filament-cms/zipball/a896828b6da2d1a2ffb55a06d90f56a80fd012f4",
+                "reference": "a896828b6da2d1a2ffb55a06d90f56a80fd012f4",
                 "shasum": ""
             },
             "require": {
@@ -5071,7 +5071,11 @@
                 "MIT"
             ],
             "description": "Shared, updatable CMS engine for multi-tenant marketing websites (Laravel 12/13 + Filament v5): content types, block builder, layout presets, fragments, redirects and the complete admin panel.",
-            "time": "2026-11-14T00:24:28+00:00"
+            "support": {
+                "source": "https://github.com/mmoollllee/filament-cms/tree/v0.25.0",
+                "issues": "https://github.com/mmoollllee/filament-cms/issues"
+            },
+            "time": "2026-11-16T22:19:58+00:00"
         },
         {
             "name": "mmoollllee/filament-consent-control",
